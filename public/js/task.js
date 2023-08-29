@@ -112,9 +112,9 @@ function adicionaTask(name, id = null, active = false) {
 function addElement(tr, active) {
     let td = document.createElement('td');
     tr.appendChild(td);
+    addChecked(tr, td, active);
     addEdit(tr, td);
     addDestroy(tr, td);
-    addChecked(tr, td, active);
 }
 function addName(tr, name, id) {
     let td = document.createElement('td');
@@ -227,9 +227,9 @@ function destroyTask(e) {
 
 function addChecked(tr, td, active) {
     tr.appendChild(td);
-    let input = document.createElement('input');
-    input.setAttribute('class', 'form-check-input form-check-lg check-task');
-    input.setAttribute('type', 'checkbox');
+    let input = document.createElement('button');
+    let activeClass = active ? 'btn-primary' : 'btn-secondary';
+    input.setAttribute('class', 'btn ' + activeClass + ' fa-solid fa-check check-task');
     input.checked = active;
 
     td.appendChild(input);
@@ -239,17 +239,21 @@ function addChecked(tr, td, active) {
 
 function addEventChecked() {
      document.querySelectorAll('.check-task').forEach(task => {
-        task.addEventListener('change', checkTask);
+        task.addEventListener('click', checkTask);
      })
 }
 
 function checkTask(e) {
-    let bool = null;
-    if (e.target.checked) {
-        bool = true;
+    if (e.target.classList.contains('btn-secondary')) {
+        e.target.classList.remove('btn-secondary');
+        e.target.classList.add('btn-primary');
     } else {
-        bool = false;
+        e.target.classList.remove('btn-primary');
+        e.target.classList.add('btn-secondary');
     }
+
+    bool = e.target.classList.contains('btn-primary');
+
     const elementoPai = e.target.parentNode.parentNode;
     const url = `/tarefa/check_task/${elementoPai.querySelector('.id-task').value}`;
     const method = 'POST';
