@@ -11,5 +11,10 @@ class Task extends Model
 
     protected $fillable = [
         'name',
+        'check_list_id',
+    ];
+
+    protected $casts = [
+        'active' => 'boolean',
     ];
 }

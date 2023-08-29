@@ -18,6 +18,11 @@ use App\Http\Controllers\TaskController;
 Route::controller(TaskController::class)->group(function () {
     Route::get('/tarefa', 'index');
     Route::post('/tarefa/save_list', 'saveList');
-    Route::get('/tarefa/atualiza_list', 'updateList');
+    Route::get('/tarefa/atualiza_list', 'showList');
+    Route::post('/tarefa/save_task', 'saveTask');
+    Route::get('/tarefa/mostra_task/{id}', 'showTask');
+    Route::post('/tarefa/edit_task', 'editTask');
+    Route::post('/tarefa/delete_task/{id}', 'destroyTask');
+    Route::post('/tarefa/check_task/{id}', 'checkTask');
 });
 
