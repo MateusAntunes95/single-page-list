@@ -7,7 +7,6 @@ const titleList = document.getElementById('title_list');
 const tbody = document.getElementById('tbody');
 let id = null;
 
-
 document.getElementById('new_list').addEventListener('click', () => {
     modal.style.display = "block";
 });
@@ -95,7 +94,6 @@ function saveTask() {
         };
         ajaxRequest(url, method, data)
       .then(response => {
-        Swal.fire('Feito!', 'A tarefa foi criada com sucesso', 'success');
         adicionaTask(document.getElementById('name_task').value, response.task_id);
       })
       .catch(error => {
@@ -147,9 +145,9 @@ function addEdit(tr, td) {
     tr.appendChild(td);
     let input = document.createElement('button');
     input.setAttribute('class', 'btn btn-success m-1 fa fa-edit edit-task');
-    addEventEdit()
 
     td.appendChild(input);
+    addEventEdit()
 }
 
 function addEventEdit() {
@@ -186,9 +184,9 @@ function addDestroy(tr, td) {
     tr.appendChild(td);
     let input = document.createElement('button');
     input.setAttribute('class', 'btn btn-danger m-1 fa fa-remove delete-task');
-    addEventDestroy();
 
     td.appendChild(input);
+    addEventDestroy();
 }
 
 function addEventDestroy() {
@@ -230,13 +228,13 @@ function destroyTask(e) {
 function addChecked(tr, td, active) {
     tr.appendChild(td);
     let input = document.createElement('input');
-    input.setAttribute('class', 'check-task');
+    input.setAttribute('class', 'form-check-input form-check-lg check-task');
     input.setAttribute('type', 'checkbox');
     input.checked = active;
 
-    addEventChecked();
-
     td.appendChild(input);
+
+    addEventChecked();
 }
 
 function addEventChecked() {
@@ -250,7 +248,6 @@ function checkTask(e) {
     if (e.target.checked) {
         bool = true;
     } else {
-        console.log('entrou aq?');
         bool = false;
     }
     const elementoPai = e.target.parentNode.parentNode;
