@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(TaskController::class)->group(function () {
+    Route::get('/tarefa', 'index');
+    Route::post('/tarefa/save_list', 'saveList');
+    Route::get('/tarefa/atualiza_list', 'updateList');
 });
+
