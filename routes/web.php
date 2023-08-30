@@ -15,3 +15,6 @@ use App\Http\Controllers\TaskController;
 |
 */
 
+Route::fallback(function () {
+    return redirect('/api/tarefa');
+});
