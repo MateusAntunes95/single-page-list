@@ -2,7 +2,7 @@
 
 Clone o repositório:
 
-```git clone https://github.com/MateusAntunes95/single-page-list.git``
+```git clone https://github.com/MateusAntunes95/single-page-list.git```
 
 Crie o arquivo .env a partir de .env.example.
 
