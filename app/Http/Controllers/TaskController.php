@@ -23,6 +23,7 @@ class TaskController extends Controller
 
             $checkList = new CheckList();
             $checkList->name = $request->input('name');
+            $checkList->user_id = auth()->user()->id;
             $checkList->save();
 
             return response()->json(['message' => 'Lista criada com sucesso'], 201);
@@ -35,7 +36,7 @@ class TaskController extends Controller
 
     public function showList()
     {
-        $checklists = CheckList::select('id', 'name')->get();
+        $checklists = CheckList::select('id', 'name')->where('user_id', auth()->user()->id)->get();
 
         return response()->json($checklists);
     }
