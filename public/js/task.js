@@ -5,9 +5,17 @@ const closeModalBtn = document.querySelector(".modal-header .close");
 const selectListTask = document.getElementById('selectListTask');
 const titleList = document.getElementById('title_list');
 const tbody = document.getElementById('tbody');
+const modalLogin = document.getElementById('modal_login');
+const closeModalLogin = document.getElementById('fechar_modal_login');
 let id = null;
+var token = null;
 
 document.getElementById('new_list').addEventListener('click', () => {
+    if (!token){
+        modalLogin.style.display = "block";
+        return;
+    }
+
     modal.style.display = "block";
 });
 
@@ -15,33 +23,28 @@ closeModalBtn.addEventListener("click", function() {
     modal.style.display = "none";
 });
 
+closeModalLogin.addEventListener("click", function() {
+    modalLogin.style.display = "none";
+});
+
 saveList.addEventListener('click', () => {
     const url = '/api/tarefa/save_list';
-    const method = 'POST';
     const data = {
         name: document.getElementById('name_list').value,
         };
 
-
-    ajaxRequest(url, method, data)
+        axios.post(url, data)
       .then(response => {
         Swal.fire('Feito!', 'A lista foi criada com sucesso', 'success')
         modal.style.display = "none";
       })
-      .catch(error => {
-      });
 });
 
 selectListTask.addEventListener('focus', () => {
-    const url = '/api/tarefa/atualiza_list';
-    const method = 'GET';
-
-    ajaxRequest(url, method)
-      .then(response => {
-        populateSelectListTask(selectListTask, response);
-      })
-      .catch(error => {
-      });
+    axios.get('/api/tarefa/atualiza_list')
+    .then(response => {
+        populateSelectListTask(selectListTask, response.data);
+    })
 })
 
 function populateSelectListTask(selectElement, data) {
@@ -60,18 +63,15 @@ selectListTask.addEventListener('change', (e) => {
     titleList.innerHTML = selectListTask.selectedOptions[0].textContent;
     id = selectListTask.selectedOptions[0].value;
     tbody.innerHTML = '';
-
     const url = `/api/tarefa/mostra_task/${id}`;
-    const method = 'GET';
 
-    ajaxRequest(url, method)
+    axios.get(url)
       .then(response => {
-        response.forEach(item => {
+        data = response.data;
+        data.forEach(item => {
             adicionaTask(item.name, item.id, item.active);
         })
       })
-      .catch(error => {
-      });
 })
 
 document.getElementById('new_task').addEventListener('click', saveTask);
@@ -89,18 +89,14 @@ function saveTask() {
     }
 
     const url = '/api/tarefa/save_task';
-    const method = 'POST';
     const data = {
         name: document.getElementById('name_task').value,
         id: id,
         };
-        ajaxRequest(url, method, data)
+    axios.post(url, data)
       .then(response => {
-        adicionaTask(document.getElementById('name_task').value, response.task_id);
+        adicionaTask(document.getElementById('name_task').value, response.data.task_id);
       })
-      .catch(error => {
-      });
-
 }
 
 function adicionaTask(name, id = null, active = false) {
@@ -166,19 +162,16 @@ function editTask(e) {
 
     elementoPai.querySelector('.input-name').addEventListener('blur', () => {
         const url = '/api/tarefa/edit_task';
-        const method = 'POST';
         const data = {
             name: elementoPai.querySelector('.input-name').value,
             id: elementoPai.querySelector('.id-task').value,
             };
-            ajaxRequest(url, method, data)
+        axios.post(url, data)
           .then(response => {
             elementoPai.querySelector('.input-name').hidden = true;
             elementoPai.querySelector('.name').hidden = false;
             elementoPai.querySelector('.name').innerHTML =  elementoPai.querySelector('.input-name').value;
           })
-          .catch(error => {
-          });
     });
 }
 
@@ -210,9 +203,8 @@ function destroyTask(e) {
       }).then((result) => {
         if (result.isConfirmed) {
             const url = `/api/tarefa/delete_task/${elementoPai.querySelector('.id-task').value}`;
-            const method = 'POST';
 
-                ajaxRequest(url, method)
+        axios.post(url)
               .then(response => {
                 Swal.fire(
                     'Deleted!',
@@ -221,8 +213,6 @@ function destroyTask(e) {
                   )
                 elementoPai.innerHTML = '';
               })
-              .catch(error => {
-              });
         }
       })
 }
@@ -258,13 +248,10 @@ function checkTask(e) {
 
     const elementoPai = e.target.parentNode.parentNode;
     const url = `/api/tarefa/check_task/${elementoPai.querySelector('.id-task').value}`;
-    const method = 'POST';
     const data = {
         active: bool,
         };
-        ajaxRequest(url, method, data)
+    axios.post(url, data)
       .then(response => {
       })
-      .catch(error => {
-      });
 }

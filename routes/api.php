@@ -35,13 +35,14 @@ Route::post('/login', function(Request $request) {
     ]);
 });
 
-Route::controller(TaskController::class)->group(function () {
-    Route::get('/tarefa', 'index');
-    Route::post('/tarefa/save_list', 'saveList');
-    Route::get('/tarefa/atualiza_list', 'showList');
-    Route::post('/tarefa/save_task', 'saveTask');
-    Route::get('/tarefa/mostra_task/{id}', 'showTask');
-    Route::post('/tarefa/edit_task', 'editTask');
-    Route::post('/tarefa/delete_task/{id}', 'destroyTask');
-    Route::post('/tarefa/check_task/{id}', 'checkTask');
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::post('/tarefa/save_list', [TaskController::class, 'saveList']);
+    Route::get('/tarefa/atualiza_list', [TaskController::class, 'showList']);
+    Route::post('/tarefa/save_task', [TaskController::class, 'saveTask']);
+    Route::get('/tarefa/mostra_task/{id}', [TaskController::class, 'showTask']);
+    Route::post('/tarefa/edit_task', [TaskController::class, 'editTask']);
+    Route::post('/tarefa/delete_task/{id}', [TaskController::class, 'destroyTask']);
+    Route::post('/tarefa/check_task/{id}', [TaskController::class, 'checkTask']);
 });
+
+Route::get('/tarefa', [TaskController::class, 'index']);
