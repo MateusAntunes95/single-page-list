@@ -11,21 +11,29 @@
             <select class="form-control" id="selectListTask"></select>
         </div>
         <div class="col-sm-3 d-grid gap-2">
-            <button id="new_list" class="btn btn-primary"><i class="fa-solid fa-list-check"></i> Criar nova lista de tarefa</button>
+            <button id="new_list" class="btn btn-dark"><i class="fa-solid fa-list-check"></i> Criar nova lista de tarefa</button>
         </div>
     </div>
-    <div class="container mt-4">
-            <div class="card border-primary">
-                <div class="card-header bg-primary text-white">
-                    <h5 id="title_list" class="mb-0">Tarefa</h5>
+    <div id="container" class="container mt-4 " hidden>
+            <div class="card border-secondary">
+                <div class="card-header bg-secondary text-white">
+                    <h5 id="title_list" class="mb-0">Tarefas</h5>
                 </div>
-                <div class="form-group">
-                    <input id="name_task" placeholder="Sua tarefa" class="form-control" type="text">
+                <div class="form-group p-3">
+                    <div class="row">
+                        <div class="col">
+                            <input id="name_task" placeholder="Sua tarefa" class="form-control" type="text">
+                        </div>
+                        <div class="col-auto">
+                            <button id="new_task" type="button" class="btn btn-dark"> <i class="fa-solid fa-plus"></i> Adicionar tarefa </button>
+                        </div>
+                    </div>
                 </div>
-                <button id="new_task" type="button" class="btn btn success"> Adicionar tarefa </button>
-               <table class="table table-bordered table-borderless">
-                    <tbody id="tbody"></tbody>
-               </table>
+                <div class="p-3">
+                    <table class="table table-bordered table-striped">
+                            <tbody id="tbody"></tbody>
+                    </table>
+                </div>
             </div>
     </div>
     <div class="modal" id="addChecklistModal">

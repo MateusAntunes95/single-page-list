@@ -56,6 +56,7 @@ function populateSelectListTask(selectElement, data) {
 }
 
 selectListTask.addEventListener('change', (e) => {
+    document.getElementById('container').hidden = false;
     titleList.innerHTML = selectListTask.selectedOptions[0].textContent;
     id = selectListTask.selectedOptions[0].value;
     tbody.innerHTML = '';
@@ -86,6 +87,7 @@ function saveTask() {
 
           return
     }
+
     const url = '/tarefa/save_task';
     const method = 'POST';
     const data = {
@@ -229,7 +231,7 @@ function addChecked(tr, td, active) {
     tr.appendChild(td);
     let input = document.createElement('button');
     let activeClass = active ? 'btn-primary' : 'btn-secondary';
-    input.setAttribute('class', 'btn ' + activeClass + ' fa-solid fa-check check-task');
+    input.setAttribute('class', 'btn ' + activeClass + ' m-1 fa-solid fa-check check-task');
     input.checked = active;
 
     td.appendChild(input);
