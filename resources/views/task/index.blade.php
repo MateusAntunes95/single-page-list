@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'pensando')
+@section('title', 'Lista de tarefas')
 
 @section('content')
     <div class="row">
