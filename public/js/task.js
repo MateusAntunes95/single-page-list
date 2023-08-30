@@ -16,7 +16,7 @@ closeModalBtn.addEventListener("click", function() {
 });
 
 saveList.addEventListener('click', () => {
-    const url = '/tarefa/save_list';
+    const url = '/api/tarefa/save_list';
     const method = 'POST';
     const data = {
         name: document.getElementById('name_list').value,
@@ -33,7 +33,7 @@ saveList.addEventListener('click', () => {
 });
 
 selectListTask.addEventListener('focus', () => {
-    const url = '/tarefa/atualiza_list';
+    const url = '/api/tarefa/atualiza_list';
     const method = 'GET';
 
     ajaxRequest(url, method)
@@ -61,7 +61,7 @@ selectListTask.addEventListener('change', (e) => {
     id = selectListTask.selectedOptions[0].value;
     tbody.innerHTML = '';
 
-    const url = `/tarefa/mostra_task/${id}`;
+    const url = `/api/tarefa/mostra_task/${id}`;
     const method = 'GET';
 
     ajaxRequest(url, method)
@@ -88,7 +88,7 @@ function saveTask() {
           return
     }
 
-    const url = '/tarefa/save_task';
+    const url = '/api/tarefa/save_task';
     const method = 'POST';
     const data = {
         name: document.getElementById('name_task').value,
@@ -165,7 +165,7 @@ function editTask(e) {
     elementoPai.querySelector('.input-name').focus();
 
     elementoPai.querySelector('.input-name').addEventListener('blur', () => {
-        const url = '/tarefa/edit_task';
+        const url = '/api/tarefa/edit_task';
         const method = 'POST';
         const data = {
             name: elementoPai.querySelector('.input-name').value,
@@ -209,7 +209,7 @@ function destroyTask(e) {
         confirmButtonText: 'Sim, delete!'
       }).then((result) => {
         if (result.isConfirmed) {
-            const url = `/tarefa/delete_task/${elementoPai.querySelector('.id-task').value}`;
+            const url = `/api/tarefa/delete_task/${elementoPai.querySelector('.id-task').value}`;
             const method = 'POST';
 
                 ajaxRequest(url, method)
@@ -257,7 +257,7 @@ function checkTask(e) {
     bool = e.target.classList.contains('btn-primary');
 
     const elementoPai = e.target.parentNode.parentNode;
-    const url = `/tarefa/check_task/${elementoPai.querySelector('.id-task').value}`;
+    const url = `/api/tarefa/check_task/${elementoPai.querySelector('.id-task').value}`;
     const method = 'POST';
     const data = {
         active: bool,
