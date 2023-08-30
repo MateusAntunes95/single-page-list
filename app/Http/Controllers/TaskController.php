@@ -5,74 +5,116 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\CheckList;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class TaskController extends Controller
 {
     public function index()
     {
-      return view('task.index');
+        return view('task.index');
     }
 
     public function saveList(Request $request)
     {
-        $checkList = new CheckList();
-        $checkList->name = $request['name'];
+        try {
+            $this->validate($request, [
+                'name' => 'required|max:255',
+            ]);
 
-        $checkList->save();
+            $checkList = new CheckList();
+            $checkList->name = $request->input('name');
+            $checkList->save();
 
-        return response()->json(['valid' => true], 200);
+            return response()->json(['message' => 'Lista criada com sucesso'], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => 'Falha nas validações', 'details' => $e->errors()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocorreu um erro ao criar lista'], 500);
+        }
     }
 
     public function showList()
     {
-        $checklists = Checklist::select('id', 'name')->get();
+        $checklists = CheckList::select('id', 'name')->get();
 
         return response()->json($checklists);
     }
 
     public function saveTask(Request $request)
     {
-        $task = new Task();
-        $task->name = $request['name'];
-        $task->check_list_id = $request['id'];
+        try {
+            $this->validate($request, [
+                'name' => 'required|max:255',
+                'id' => 'required|exists:check_lists,id',
+            ]);
 
-        $task->save();
+            $task = new Task();
+            $task->name = $request->input('name');
+            $task->check_list_id = $request->input('id');
+            $task->save();
 
-        return response()->json(['valid' => true, 'task_id' => $task->id], 200);
+            return response()->json(['message' => 'Tarefa criada com sucesso', 'task_id' => $task->id], 201);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => 'Falha nas validações', 'details' => $e->errors()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocorreu um erro ao salvar a tarefa'], 500);
+        }
     }
 
     public function showTask($id)
     {
-        $task = Task::select(['id', 'name', 'active'])->where('check_list_id', $id)->get();
+        $tasks = Task::select(['id', 'name', 'active'])->where('check_list_id', $id)->get();
 
-        return response()->json($task);
+        return response()->json($tasks);
     }
 
     public function editTask(Request $request)
     {
-        $task = Task::find($request['id']);
-        $task->name = $request['name'];
+        try {
+            $this->validate($request, [
+                'id' => 'required|exists:tasks,id',
+                'name' => 'required|max:255',
+            ]);
 
-        $task->save();
+            $task = Task::find($request['id']);
+            $task->name = $request['name'];
+            $task->save();
 
-        return response()->json(['valid' => true], 200);
+            return response()->json(['message' => 'Tarefa atualizada com sucesso'], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => 'Falha nas validações', 'details' => $e->errors()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocorreu um erro ao atualizar a tarefa'], 500);
+        }
     }
 
     public function destroyTask(Request $request)
     {
-        Task::find($request['id'])->delete();
+        try {
+            Task::find($request['id'])->delete();
 
-        return response()->json(['valid' => true], 200);
+            return response()->json(['message' => 'Tarefa excluída com sucesso'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocorreu um erro ao excluir a tarefa'], 500);
+        }
     }
 
     public function checkTask($id, Request $request)
     {
-        info($request->all());
-        $task = Task::find($id);
-        $task->active = $request['active'];
-        $task->save();
+        try {
+            $this->validate($request, [
+                'active' => 'required|boolean',
+            ]);
 
-        return response()->json(['valid' => true], 200);
+            $task = Task::find($id);
+            $task->active = $request['active'];
+            $task->save();
 
+            return response()->json(['message' => 'Tarefa marcada como feita com sucesso'], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => 'Falha nas validações', 'details' => $e->errors()], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ocorreu um erro ao marcar a tarefa como feita'], 500);
+        }
     }
 }
