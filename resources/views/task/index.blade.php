@@ -8,7 +8,9 @@
             <label for="selectOpcoes">Escolha uma lista de Tarefas:</label>
         </div>
         <div class="col-sm-9">
-            <select class="form-control" id="selectListTask"></select>
+            <select class="form-control" id="selectListTask">
+                <option> Selecione uma lista </option>
+            </select>
         </div>
         <div class="col-sm-3 d-grid gap-2">
             <button id="new_list" class="btn btn-dark"><i class="fa-solid fa-list-check"></i> Criar nova lista de
