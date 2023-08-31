@@ -20,10 +20,10 @@ class TaskController extends Controller
             $this->validate($request, [
                 'name' => 'required|max:255',
             ]);
-
             $checkList = new CheckList();
             $checkList->name = $request->input('name');
             $checkList->user_id = auth()->user()->id;
+
             $checkList->save();
 
             return response()->json(['message' => 'Lista criada com sucesso'], 201);
@@ -48,7 +48,6 @@ class TaskController extends Controller
                 'name' => 'required|max:255',
                 'id' => 'required|exists:check_lists,id',
             ]);
-
             $task = new Task();
             $task->name = $request->input('name');
             $task->check_list_id = $request->input('id');

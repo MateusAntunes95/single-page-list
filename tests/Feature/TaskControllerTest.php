@@ -13,18 +13,21 @@ class TaskControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    private $user;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $user = User::factory()->create();
-        $token = auth()->login($user);
+        $this->user = User::factory()->create();
+        $token = auth()->login($this->user);
         $this->withHeaders(['Authorization' => 'Bearer ' . $token]);
     }
 
     public function testCreateCheckList()
     {
-        $data = ['name' => $this->faker->word];
+        $data = ['name' => $this->faker->word, 'user_id' => $this->user->id];
+
 
         $this->post('/api/tarefa/save_list', $data)
             ->assertStatus(201)
@@ -33,7 +36,7 @@ class TaskControllerTest extends TestCase
 
     public function testShowCheckLists()
     {
-        $checklist = CheckList::factory()->create();
+        $checklist = CheckList::factory()->create(['user_id' => $this->user->id]);
 
         $this->get('/api/tarefa/atualiza_list')
             ->assertStatus(200)

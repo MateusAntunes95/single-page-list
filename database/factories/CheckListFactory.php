@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\CheckList;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CheckListFactory extends Factory
@@ -13,6 +14,9 @@ class CheckListFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
+            'user_id' =>  function () {
+                return User::factory()->create()->id;
+            }
         ];
     }
 }
